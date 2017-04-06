@@ -10,7 +10,7 @@ import android.widget.Toast;
  * Super Class for Final Project
  */
 
-public class BaseActivity extends AppCompatActivity{
+public class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

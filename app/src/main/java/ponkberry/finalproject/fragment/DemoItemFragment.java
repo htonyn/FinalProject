@@ -10,13 +10,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import ponkberry.finalproject.R;
-import ponkberry.finalproject.adapter.fragment.F2PRecyclerViewAdapter;
-import ponkberry.finalproject.gameobject.GameObject;
-
 import java.util.ArrayList;
 
-public class F2PItemFragment extends Fragment {
+import ponkberry.finalproject.R;
+import ponkberry.finalproject.adapter.fragment.DemoRecyclerViewAdapter;
+import ponkberry.finalproject.gameobject.GameObject;
+
+public class DemoItemFragment extends Fragment {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
@@ -28,13 +28,13 @@ public class F2PItemFragment extends Fragment {
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public F2PItemFragment() {
+    public DemoItemFragment() {
     }
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static F2PItemFragment newInstance(int columnCount) {
-        F2PItemFragment fragment = new F2PItemFragment();
+    public static DemoItemFragment newInstance(int columnCount) {
+        DemoItemFragment fragment = new DemoItemFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
@@ -65,20 +65,19 @@ public class F2PItemFragment extends Fragment {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
             ArrayList<GameObject> gameList = new ArrayList<>();
-            gameList.add(new GameObject("404Sight", 361360, "F2P", false));
-            gameList.add(new GameObject("Altitude", 41300, "F2P", false));
-            gameList.add(new GameObject("Antenna", 443580, "F2P", false));
-            gameList.add(new GameObject("Blind Trust", 468560, "F2P", false));
-            gameList.add(new GameObject("Carpe Diem", 423880, "F2P", false));
-            gameList.add(new GameObject("Cloney", 400030, "F2P", false));
-            gameList.add(new GameObject("Dev Guy", 351800, "F2P", false));
-            gameList.add(new GameObject("Emily is Away", 417860, "F2P", false));
-            gameList.add(new GameObject("Free to Play", 245550, "F2P", false));
-            gameList.add(new GameObject("Iron Snout", 424280, "F2P", false));
-            gameList.add(new GameObject("Mandagon", 461560, "F2P", false));
+            gameList.add(new GameObject("Angels that Kill", 410680, "Demo", false));
+            gameList.add(new GameObject("Blob From Space", 437150, "Demo", false));
+            gameList.add(new GameObject("Blue Rose", 365630, "Demo", false));
+            gameList.add(new GameObject("Concursion", 318080, "Demo", false));
+            gameList.add(new GameObject("Cursed Sight", 360560, "Demo", false));
+            gameList.add(new GameObject("Flat Kingdom", 407370, "Demo", false));
+            gameList.add(new GameObject("Mu Complex", 434640, "Demo", false));
+            gameList.add(new GameObject("She Remembered Caterpillars", 470800, "Demo", false));
+            gameList.add(new GameObject("Stanley Parable", 247750, "Demo", false));
+            gameList.add(new GameObject("Teslagrad", 254560, "Demo", false));
+            gameList.add(new GameObject("Without Within 2", 399010, "Demo", false));
 
-            recyclerView.setAdapter(new F2PRecyclerViewAdapter(gameList, mListener));
-
+            recyclerView.setAdapter(new DemoRecyclerViewAdapter(gameList, mListener));
         }
         return view;
     }
@@ -102,6 +101,6 @@ public class F2PItemFragment extends Fragment {
     }
 
     public interface OnListFragmentInteractionListener {
-        public void F2PFragmentInteraction(GameObject game);
+        public void DemoFragmentInteraction(GameObject game);
     }
 }

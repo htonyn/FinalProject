@@ -1,4 +1,4 @@
-package ponkberry.finalproject.fragment;
+package ponkberry.finalproject.adapter.fragment;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,23 +8,16 @@ import android.widget.TextView;
 
 import ponkberry.finalproject.R;
 import ponkberry.finalproject.fragment.F2PItemFragment.OnListFragmentInteractionListener;
-import ponkberry.finalproject.fragment.dummy.DummyContent.DummyItem;
 import ponkberry.finalproject.gameobject.GameObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
-/**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
- * specified {@link OnListFragmentInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
- */
-public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecyclerViewAdapter.ViewHolder> {
+public class F2PRecyclerViewAdapter extends RecyclerView.Adapter<F2PRecyclerViewAdapter.ViewHolder> {
 
     private final ArrayList<GameObject> mValues;
     private final OnListFragmentInteractionListener mListener;
 
-    public MyItemRecyclerViewAdapter(ArrayList<GameObject> items, OnListFragmentInteractionListener listener) {
+    public F2PRecyclerViewAdapter(ArrayList<GameObject> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
@@ -39,7 +32,7 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).getAppid());
+        holder.mIdView.setText(""+mValues.get(position).getAppid());
         holder.mContentView.setText(mValues.get(position).getName());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
@@ -48,7 +41,7 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
+                    mListener.F2PFragmentInteraction(holder.mItem);
                 }
             }
         });
