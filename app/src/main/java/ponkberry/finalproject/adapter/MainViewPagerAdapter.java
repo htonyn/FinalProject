@@ -1,54 +1,44 @@
 package ponkberry.finalproject.adapter;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.PagerAdapter;
+import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
+import java.util.List;
 
-/**
- * Created by Ponk on 3/30/2017.
- */
+public class MainViewPagerAdapter extends PagerAdapter {
 
-public class MainViewPagerAdapter extends FragmentPagerAdapter {
+    private static final String[] tabHeaders = new String[] { "Free2Play", "Demos", "Login" };
+    private List<View> viewList;
 
-    private ArrayList<Fragment> fragmentList;
-    private static final String[] tabHeaders = new String[] { "F2P", "R-Demo", "U-Demo", "Action", "Puzzle", "Shooter" };
-
-    public MainViewPagerAdapter(FragmentManager fm) {
-        super(fm);
-    }
-
-    public void setContent(ArrayList<Fragment> fragmentList) {
-        this.fragmentList = fragmentList;
-    }
-
-    @Override
-    public Fragment getItem(int position) {
-        return fragmentList.get(position);
-    }
-
-    @Override
-    public int getCount() {
-        return fragmentList.size();
+    public MainViewPagerAdapter(List<View> mListViews) {
+        this.viewList = mListViews;
     }
 
     @Override
     public CharSequence getPageTitle(int position) {
         return tabHeaders[position % tabHeaders.length];
-//        return tabTyping[position % tabTyping.length];
 //        return fragmentList.get(position).getClass().getName();
     }
 
     @Override
-    public Object instantiateItem(ViewGroup container, int position) {
-        return super.instantiateItem(container, position);
+    public int getCount() {
+        return viewList.size();
     }
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-        super.destroyItem(container, position, object);
-        // This does not destroy from the memory.
+        container.removeView(viewList.get(position));
+    }
+
+    @Override
+    public Object instantiateItem(ViewGroup container, int position) {
+        container.addView(viewList.get(position), 0);
+        return viewList.get(position);
+    }
+
+    @Override
+    public boolean isViewFromObject(View arg0, Object arg1) {
+        return arg0 == arg1;
     }
 }

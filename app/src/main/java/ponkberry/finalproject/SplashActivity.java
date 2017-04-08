@@ -93,7 +93,7 @@ public class SplashActivity extends BaseActivity {
     }
 
     protected void endSplash() {
-        toActivity(MainActivity.class);
+        toActivity(MainViewPager.class);
         finish();
     }
 }
