@@ -5,4 +5,7 @@
     <color name="colorAccent">#FF4081</color>
     <color name="notPeriwinkle">#CCCCFF</color>
     <color name="splashFooter">#1FFF33</color>
+    <color name="completed">#29a500</color>
+    <color name="inProgress">#ffed4a</color>
+    <color name="untouched">#fd5555</color>
 </resources>

@@ -49,8 +49,8 @@ public class SplashActivity extends BaseActivity {
         Typeface myriadProBold = Typeface.createFromAsset(getAssets(), "fonts/MyriadPro-Bold.otf");
         tv.setTypeface(myriadPro);
         tv2.setTypeface(myriadProBold);
-        String name = splashPreferences.getString("name","");
-        //toastShort("Toast: "+name);
+//        String name = splashPreferences.getString("name","");
+//        toastShort("Toast: "+name);
         tv.setText("Hello, "+splashPreferences.getString("name",""));
     }
 

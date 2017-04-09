@@ -1,5 +1,7 @@
 package ponkberry.finalproject.adapter;
 
+import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.widget.BaseAdapter;
 
 /**
@@ -61,7 +63,22 @@ public class ListViewAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
         holder.object = listResult.get(position);
-
+        switch(holder.object.getCompletion()) {
+            case 0:
+                holder.textView1.setTextColor(ContextCompat.getColor(mContext, R.color.untouched));
+                holder.textView2.setTextColor(ContextCompat.getColor(mContext, R.color.untouched));
+                break;
+            case 1:
+                holder.textView1.setTextColor(ContextCompat.getColor(mContext, R.color.inProgress));
+                holder.textView2.setTextColor(ContextCompat.getColor(mContext, R.color.inProgress));
+                break;
+            case 2:
+                holder.textView1.setTextColor(ContextCompat.getColor(mContext, R.color.completed));
+                holder.textView2.setTextColor(ContextCompat.getColor(mContext, R.color.completed));
+                break;
+            default:
+                break;
+        }
         holder.textView1.setText(""+holder.object.getAppid());
         holder.textView2.setText(holder.object.getName());
 

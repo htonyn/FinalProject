@@ -8,13 +8,22 @@ public class GameObject {
     private String name;
     private int appid;
     private String genre;
-    private boolean completion;
+    private int completion;
+    private int achievements;
 
-    public GameObject(String name, int appid, String genre, boolean completion) {
+    public GameObject(String name, int appid, String genre, int completion) {
         this.name = name;
         this.appid = appid;
         this.genre = genre;
         this.completion = completion;
+    }
+
+    public GameObject(String name, int appid, String genre, int completion, int achievements) {
+        this.name = name;
+        this.appid = appid;
+        this.genre = genre;
+        this.completion = completion;
+        this.achievements = achievements;
     }
 
     public String getName() {
@@ -26,7 +35,8 @@ public class GameObject {
     public String getGenre() {
         return genre;
     }
-    public boolean getCompletion() {
+    public int getCompletion() {
         return completion;
     }
+    public int getAchievements() { return achievements; }
 }

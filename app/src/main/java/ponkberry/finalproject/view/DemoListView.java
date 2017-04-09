@@ -45,16 +45,16 @@ public class DemoListView extends LinearLayout {
     }
 
     private void populateGameList(ArrayList<GameObject> list) {
-        list.add(new GameObject("Angels that Kill", 410680, "Demo", false));
-        list.add(new GameObject("Blob From Space", 437150, "Demo", false));
-        list.add(new GameObject("Blue Rose", 365630, "Demo", false));
-        list.add(new GameObject("Concursion", 318080, "Demo", false));
-        list.add(new GameObject("Cursed Sight", 360560, "Demo", false));
-        list.add(new GameObject("Flat Kingdom", 407370, "Demo", false));
-        list.add(new GameObject("Mu Complex", 434640, "Demo", false));
-        list.add(new GameObject("She Remembered Caterpillars", 470800, "Demo", false));
-        list.add(new GameObject("Stanley Parable", 247750, "Demo", false));
-        list.add(new GameObject("Teslagrad", 254560, "Demo", false));
-        list.add(new GameObject("Without Within 2", 399010, "Demo", false));
+        list.add(new GameObject("Angels that Kill", 410680, "Demo", 2));
+        list.add(new GameObject("Blob From Space", 437150, "Demo", 2));
+        list.add(new GameObject("Blue Rose", 365630, "Demo", 2));
+        list.add(new GameObject("Concursion", 318080, "Demo", 2));
+        list.add(new GameObject("Cursed Sight", 360560, "Demo", 2));
+        list.add(new GameObject("Flat Kingdom", 407370, "Demo", 2));
+        list.add(new GameObject("Mu Complex", 434640, "Demo", 2));
+        list.add(new GameObject("She Remembered Caterpillars", 470800, "Demo", 0));
+        list.add(new GameObject("Stanley Parable", 247750, "Demo", 2));
+        list.add(new GameObject("Teslagrad", 254560, "Demo", 2));
+        list.add(new GameObject("Without Within 2", 399010, "Demo", 2));
     }
 }
