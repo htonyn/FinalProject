@@ -4,13 +4,11 @@ import android.animation.ObjectAnimator;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -18,31 +16,31 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import butterknife.BindView;
+import butterknife.BindViews;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import ponkberry.finalproject.adapter.MainViewPagerAdapter;
 import ponkberry.finalproject.adapter.NavMenuAdapter;
-import ponkberry.finalproject.gameobject.GameObject;
-import ponkberry.finalproject.gameobject.GameProgress;
+import ponkberry.finalproject.service.BaseAudioOb;
+import ponkberry.finalproject.service.MusicController;
 import ponkberry.finalproject.util.UtilLog;
-import ponkberry.finalproject.view.DemoListView;
-import ponkberry.finalproject.view.F2PListView;
 
 /**
- * Created by Ponk on 4/6/2017.
+ * Created by htony on 4/9/2017.
  */
 
-public class MainViewPager extends BaseActivity implements View.OnTouchListener, AdapterView.OnItemClickListener {
+public class ProfileActivity extends BaseActivity implements View.OnTouchListener, MusicController.IPlayerStatus, AdapterView.OnItemClickListener {
 
+    private ArrayList<BaseAudioOb> contentList = new ArrayList<BaseAudioOb>();
+    private MusicController controller;
     private GestureDetector mGestureDetector;
     private boolean navMenuVisible;
     private ListView mNavList;
     private ArrayList<String> listResult;
     private static final String[] navMenuList = new String[] { "Logout" };
 
-    @BindView(R.id.gesture_nav_menu)
+    @BindView(R.id.prof_gesture_nav_menu)
     View nav_menu;
-    @OnClick(R.id.main_nav_button)
+    @OnClick(R.id.prof_nav_button)
     public void navMenu() {
         toastShort("Hello");
         if (!navMenuVisible) {
@@ -53,30 +51,49 @@ public class MainViewPager extends BaseActivity implements View.OnTouchListener,
             navClose();
         }
     }
-    @BindView(R.id.main_nav_view)
-    LinearLayout nav_view;
-    @BindView(R.id.main_viewpager)
-    ViewPager viewPager;
-    @BindView(R.id.main_tablayout)
-    TabLayout tabLayout;
-    @BindView(R.id.main_username)
+    @BindView(R.id.prof_username)
     TextView userName;
+    @BindView(R.id.prof_nav_view)
+    LinearLayout nav_view;
+    @BindView(R.id.prof_play_button)
+    ImageButton playButton;
+    @BindView(R.id.prof_achievements)
+    TextView tv_ach;
+    @BindView(R.id.prof_comp_perc)
+    TextView tv_perc;
+    @BindView(R.id.prof_total_comp)
+    TextView tv_comp;
+
+    @OnClick(R.id.prof_play_button)
+    public void playButton() {
+        if (!controller.isPlaying) {
+            UtilLog.logD("ProfMusicPlayer", "IsPlaying");
+            controller.play();
+        } else {
+            UtilLog.logD("ProfMusicPlayer", "IsPausing");
+            controller.pause();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_profile);
         ButterKnife.bind(this);
-        mGestureDetector = new GestureDetector(this,new simpleGestureListener());
+        AudioOb m1 = new AudioOb();
+        m1.setURL("http://puu.sh/uYEg4/c88c536ef6.mp3");
+        m1.setName("Profile Song");
+        contentList.add(m1);
+        mGestureDetector = new GestureDetector(this,new ProfileActivity.simpleGestureListener());
         nav_view.setOnTouchListener(this);
         nav_view.setLongClickable(true);
-        initializeViewPager();
         setPreferences();
+        setMusicController();
         listResult = new ArrayList<String>();
         for (int i = 0; i < navMenuList.length; i++) {
             listResult.add(navMenuList[i]);
         }
-        mNavList = (ListView) findViewById(R.id.nav_menu_list);
+        mNavList = (ListView) findViewById(R.id.prof_nav_menu_list);
         NavMenuAdapter listViewAdapter = new NavMenuAdapter(this, listResult);
         mNavList.setAdapter(listViewAdapter);
         mNavList.setOnItemClickListener(this);
@@ -89,10 +106,23 @@ public class MainViewPager extends BaseActivity implements View.OnTouchListener,
         Typeface myriadPro = Typeface.createFromAsset(getAssets(), "fonts/Myriad Pro Regular.ttf");
         Typeface myriadProBold = Typeface.createFromAsset(getAssets(), "fonts/MyriadPro-Bold.otf");
         userName.setTypeface(myriadPro);
-        userName.setText(""+mainPreferences.getString("name",""));
-//        if(mainPreferences.getString("progress","")==null) {
-//            emptyShell();
-//        }
+        userName.setText(mainPreferences.getString("name",""));
+        //toastShort(""+mainPreferences.getInt("ach",0));
+        tv_ach.setText(""+mainPreferences.getInt("ach", 0));
+        int comp = mainPreferences.getInt("completed", 0);
+        tv_comp.setText(""+comp);
+        comp = comp * 100 / 486;
+        tv_perc.setText(comp+"%");
+    }
+
+    private void setMusicController() {
+        controller = MusicController.getInstance(this);
+        controller.setPlayList(getContent());
+        controller.addListener("ProfileView", this);
+    }
+
+    public ArrayList<BaseAudioOb> getContent(){
+        return contentList;
     }
 
     public void navOpen() {
@@ -109,47 +139,84 @@ public class MainViewPager extends BaseActivity implements View.OnTouchListener,
         navMenuVisible = false;
     }
 
-    private void emptyShell() {
-        ArrayList<ArrayList> totalGames = new ArrayList<>();
-        ArrayList<GameProgress> freeGP = new ArrayList<>();
-        ArrayList<GameProgress> demoGP = new ArrayList<>();
-        totalGames.add(freeGP);
-        totalGames.add(demoGP);
-        freeGP.add(new GameProgress("404Sight", 0, 0));
-        freeGP.add(new GameProgress("Altitude", 0, 0));
-        freeGP.add(new GameProgress("Antenna", 0, 0));
-        freeGP.add(new GameProgress("Blind Trust", 0, 0));
-        freeGP.add(new GameProgress("Carpe Diem", 0, 0));
-        freeGP.add(new GameProgress("Cloney", 0, 0));
-        freeGP.add(new GameProgress("Dev Guy", 0, 0));
-        freeGP.add(new GameProgress("Emily is Away", 0, 0));
-        freeGP.add(new GameProgress("Free to Play", 0, 0));
-        freeGP.add(new GameProgress("Iron Snout", 0, 0));
-        freeGP.add(new GameProgress("Mandagon", 0, 0));
-        demoGP.add(new GameProgress("Angels that Kill", 1, 0));
-        demoGP.add(new GameProgress("Blob From Space", 1, 0));
-        demoGP.add(new GameProgress("Blue Rose", 2, 0));
-        demoGP.add(new GameProgress("Concursion", 2, 0));
-        demoGP.add(new GameProgress("Cursed Sight", 3, 0));
-        demoGP.add(new GameProgress("Flat Kingdom", 1, 0));
-        demoGP.add(new GameProgress("Mu Complex", 5, 0));
-        demoGP.add(new GameProgress("She Remembered Caterpillars", 4, 0));
-        demoGP.add(new GameProgress("Stanley Parable", 1, 0));
-        demoGP.add(new GameProgress("Teslagrad", 9, 0));
-        demoGP.add(new GameProgress("Without Within 2", 2, 0));
-    }
-
-    private void initializeViewPager() {
-        ArrayList<View> viewList = new ArrayList<View>();
-        viewList.add(new F2PListView(this));
-        viewList.add(new DemoListView(this));
-        viewPager.setAdapter(new MainViewPagerAdapter(viewList));
-        tabLayout.setupWithViewPager(viewPager);
+    @Override
+    protected void onDestroy() {
+        MusicController controller = MusicController.getInstance(this);
+        controller.destroy();
+        super.onDestroy();
     }
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         return mGestureDetector.onTouchEvent(event);
+    }
+
+    private void prepareStatus() {
+        playButton.setImageResource(R.mipmap.play_button_2);
+    }
+
+    private void pauseStatus() {
+        playButton.setImageResource(R.mipmap.play_button_2);
+    }
+
+    private void startStatus() {
+        playButton.setImageResource(R.mipmap.pause_button_2);
+    }
+
+    @Override
+    public void onLoading() {
+        prepareStatus();
+    }
+
+    @Override
+    public void onProgress(int i) {
+
+    }
+
+    @Override
+    public void onError(String error) {
+        toastShort(error);
+    }
+
+    @Override
+    public void onPrepared() {
+
+    }
+
+    @Override
+    public void onSeekComplete() {
+
+    }
+
+    @Override
+    public void onComplete() {
+
+    }
+
+    @Override
+    public void onUpdateCache(int i) {
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        pauseStatus();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onStart(int i) {
+        startStatus();
+    }
+
+    @Override
+    public void onInitComplete() {
+
     }
 
     @Override
@@ -204,9 +271,9 @@ public class MainViewPager extends BaseActivity implements View.OnTouchListener,
 
             if ((e1.getX() < e2.getX())) {
                 //toastShort("Right");
-                toActivity(ProfileActivity.class);
             } else if (e2.getX() < e1.getX()) {
                 //toastShort("Left");
+                toActivity(MainViewPager.class);
             }
 
             //toastShort("onFling");

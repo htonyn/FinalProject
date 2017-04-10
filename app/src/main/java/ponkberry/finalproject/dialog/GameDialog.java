@@ -15,6 +15,7 @@ import ponkberry.finalproject.R;
 
 /**
  * Created by Ponk on 4/8/2017.
+ * No longer in use
  */
 
 public class GameDialog extends Dialog {

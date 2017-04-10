@@ -6,6 +6,7 @@ import android.content.Intent;
 
 /**
  * Created by Ponk on 4/6/2017.
+ * Not in use
  */
 
 public class NotificationReceiver extends BroadcastReceiver {

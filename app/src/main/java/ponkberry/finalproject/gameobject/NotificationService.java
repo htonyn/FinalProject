@@ -14,6 +14,7 @@ import ponkberry.finalproject.util.UtilLog;
 
 /**
  * Created by Ponk on 4/3/2017.
+ * Not in use
  */
 
 public class NotificationService extends Service {
@@ -79,7 +80,4 @@ public class NotificationService extends Service {
         intent.setAction(notificationServiceStatus);
         sendBroadcast(intent);
     }
-
-
-
 }

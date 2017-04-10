@@ -21,6 +21,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -84,7 +85,6 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
         ButterKnife.bind(this);
         initialize();
 
-        // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
 
@@ -110,6 +110,10 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
                     loginPrefEditor.putBoolean("saveLogin", true);
                     loginPrefEditor.putString("username", email);
                     loginPrefEditor.putString("password", password);
+                    // Dummy Data
+                    loginPrefEditor.putInt("ach", 14333);
+                    loginPrefEditor.putInt("achievements", 14333);
+                    loginPrefEditor.putInt("completed", 415);
                     loginPrefEditor.commit();
                 } else {
                     loginPrefEditor.clear();

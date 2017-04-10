@@ -2,6 +2,7 @@ package ponkberry.finalproject;
 
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.animation.Animation;
@@ -9,6 +10,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -49,8 +52,6 @@ public class SplashActivity extends BaseActivity {
         Typeface myriadProBold = Typeface.createFromAsset(getAssets(), "fonts/MyriadPro-Bold.otf");
         tv.setTypeface(myriadPro);
         tv2.setTypeface(myriadProBold);
-//        String name = splashPreferences.getString("name","");
-//        toastShort("Toast: "+name);
         tv.setText("Hello, "+splashPreferences.getString("name",""));
     }
 
@@ -78,6 +79,7 @@ public class SplashActivity extends BaseActivity {
                                 tv2.setText(loadStatements[counter % loadStatements.length]);
                             }
                         });
+                        mHandler.sendEmptyMessage(0);
                         if (mProgressStatus%10==0) {
                             counter++;
                         }
