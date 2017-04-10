@@ -122,10 +122,10 @@ public class F2PListView extends LinearLayout implements AdapterView.OnItemClick
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
-        SharedPreferences demoPreferences = context.getSharedPreferences("loginPrefs", context.MODE_PRIVATE);
-        SharedPreferences.Editor demoEditor = demoPreferences.edit();
-        int count = demoPreferences.getInt("achievements", 0);
-        demoEditor.putInt("achievements", count+achievementCountF2P);
+//        SharedPreferences demoPreferences = context.getSharedPreferences("loginPrefs", context.MODE_PRIVATE);
+//        SharedPreferences.Editor demoEditor = demoPreferences.edit();
+//        int count = demoPreferences.getInt("achievements", 0);
+//        demoEditor.putInt("achievements", count+achievementCountF2P);
         adapter.notifyDataSetChanged();
     }
 

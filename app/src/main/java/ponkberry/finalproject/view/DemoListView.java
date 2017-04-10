@@ -114,10 +114,10 @@ public class DemoListView extends LinearLayout implements AdapterView.OnItemClic
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
-        SharedPreferences demoPreferences = context.getSharedPreferences("loginPrefs", context.MODE_PRIVATE);
-        SharedPreferences.Editor demoEditor = demoPreferences.edit();
-        int count = demoPreferences.getInt("achievements", 0);
-        demoEditor.putInt("achievements", count+achievementCountDemo);
+//        SharedPreferences demoPreferences = context.getSharedPreferences("loginPrefs", context.MODE_PRIVATE);
+//        SharedPreferences.Editor demoEditor = demoPreferences.edit();
+//        int count = demoPreferences.getInt("achievements", 0);
+//        demoEditor.putInt("achievements", count+achievementCountDemo);
         adapter.notifyDataSetChanged();
     }
 

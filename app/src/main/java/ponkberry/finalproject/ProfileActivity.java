@@ -4,7 +4,9 @@ import android.animation.ObjectAnimator;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
 import android.view.GestureDetector;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -22,6 +24,7 @@ import butterknife.OnClick;
 import ponkberry.finalproject.adapter.NavMenuAdapter;
 import ponkberry.finalproject.service.BaseAudioOb;
 import ponkberry.finalproject.service.MusicController;
+import ponkberry.finalproject.util.UtilDensity;
 import ponkberry.finalproject.util.UtilLog;
 
 /**
@@ -33,22 +36,17 @@ public class ProfileActivity extends BaseActivity implements View.OnTouchListene
     private ArrayList<BaseAudioOb> contentList = new ArrayList<BaseAudioOb>();
     private MusicController controller;
     private GestureDetector mGestureDetector;
-    private boolean navMenuVisible;
+    private DrawerLayout mNavMenu;
     private ListView mNavList;
     private ArrayList<String> listResult;
     private static final String[] navMenuList = new String[] { "Logout" };
 
-    @BindView(R.id.prof_gesture_nav_menu)
-    View nav_menu;
     @OnClick(R.id.prof_nav_button)
     public void navMenu() {
-        toastShort("Hello");
-        if (!navMenuVisible) {
-            //Open Animation
-            navOpen();
+        if (mNavMenu.isDrawerOpen(Gravity.START)) {
+            mNavMenu.closeDrawer(Gravity.START);
         } else {
-            //Close Animation
-            navClose();
+            mNavMenu.openDrawer(Gravity.START);
         }
     }
     @BindView(R.id.prof_username)
@@ -89,6 +87,7 @@ public class ProfileActivity extends BaseActivity implements View.OnTouchListene
         nav_view.setLongClickable(true);
         setPreferences();
         setMusicController();
+        mNavMenu = (DrawerLayout) findViewById(R.id.prof_nav_menu);
         listResult = new ArrayList<String>();
         for (int i = 0; i < navMenuList.length; i++) {
             listResult.add(navMenuList[i]);
@@ -97,7 +96,6 @@ public class ProfileActivity extends BaseActivity implements View.OnTouchListene
         NavMenuAdapter listViewAdapter = new NavMenuAdapter(this, listResult);
         mNavList.setAdapter(listViewAdapter);
         mNavList.setOnItemClickListener(this);
-        navMenuVisible = false;
     }
 
     private void setPreferences() {
@@ -123,20 +121,6 @@ public class ProfileActivity extends BaseActivity implements View.OnTouchListene
 
     public ArrayList<BaseAudioOb> getContent(){
         return contentList;
-    }
-
-    public void navOpen() {
-        ObjectAnimator animator = ObjectAnimator.ofFloat(nav_menu, "translationX", 0, 450);
-        animator.setDuration(1000);
-        animator.start();
-        navMenuVisible = true;
-    }
-
-    public void navClose() {
-        ObjectAnimator animator = ObjectAnimator.ofFloat(nav_menu, "translationX", 450, 0);
-        animator.setDuration(1000);
-        animator.start();
-        navMenuVisible = false;
     }
 
     @Override

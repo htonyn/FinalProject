@@ -1,15 +1,19 @@
 package ponkberry.finalproject;
 
 import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
 import android.view.GestureDetector;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -24,6 +28,7 @@ import ponkberry.finalproject.adapter.MainViewPagerAdapter;
 import ponkberry.finalproject.adapter.NavMenuAdapter;
 import ponkberry.finalproject.gameobject.GameObject;
 import ponkberry.finalproject.gameobject.GameProgress;
+import ponkberry.finalproject.util.UtilDensity;
 import ponkberry.finalproject.util.UtilLog;
 import ponkberry.finalproject.view.DemoListView;
 import ponkberry.finalproject.view.F2PListView;
@@ -35,22 +40,17 @@ import ponkberry.finalproject.view.F2PListView;
 public class MainViewPager extends BaseActivity implements View.OnTouchListener, AdapterView.OnItemClickListener {
 
     private GestureDetector mGestureDetector;
-    private boolean navMenuVisible;
+    private DrawerLayout mNavMenu;
     private ListView mNavList;
     private ArrayList<String> listResult;
     private static final String[] navMenuList = new String[] { "Logout" };
 
-    @BindView(R.id.gesture_nav_menu)
-    View nav_menu;
     @OnClick(R.id.main_nav_button)
     public void navMenu() {
-        toastShort("Hello");
-        if (!navMenuVisible) {
-            //Open Animation
-            navOpen();
+        if (mNavMenu.isDrawerOpen(Gravity.START)) {
+            mNavMenu.closeDrawer(Gravity.START);
         } else {
-            //Close Animation
-            navClose();
+            mNavMenu.openDrawer(Gravity.START);
         }
     }
     @BindView(R.id.main_nav_view)
@@ -72,6 +72,7 @@ public class MainViewPager extends BaseActivity implements View.OnTouchListener,
         nav_view.setLongClickable(true);
         initializeViewPager();
         setPreferences();
+        mNavMenu = (DrawerLayout) findViewById(R.id.main_nav_menu);
         listResult = new ArrayList<String>();
         for (int i = 0; i < navMenuList.length; i++) {
             listResult.add(navMenuList[i]);
@@ -80,7 +81,6 @@ public class MainViewPager extends BaseActivity implements View.OnTouchListener,
         NavMenuAdapter listViewAdapter = new NavMenuAdapter(this, listResult);
         mNavList.setAdapter(listViewAdapter);
         mNavList.setOnItemClickListener(this);
-        navMenuVisible = false;
     }
 
     private void setPreferences() {
@@ -93,20 +93,6 @@ public class MainViewPager extends BaseActivity implements View.OnTouchListener,
 //        if(mainPreferences.getString("progress","")==null) {
 //            emptyShell();
 //        }
-    }
-
-    public void navOpen() {
-        ObjectAnimator animator = ObjectAnimator.ofFloat(nav_menu, "translationX", 0, 450);
-        animator.setDuration(1000);
-        animator.start();
-        navMenuVisible = true;
-    }
-
-    public void navClose() {
-        ObjectAnimator animator = ObjectAnimator.ofFloat(nav_menu, "translationX", 450, 0);
-        animator.setDuration(1000);
-        animator.start();
-        navMenuVisible = false;
     }
 
     private void emptyShell() {
